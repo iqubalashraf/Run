@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Run</string>
+    <string name="start_run">Start Run</string>
+    <string name="avg_pace">AVG PACE</string>
+    <string name="total_hours">TOTAL HOURS</string>
+    <string name="total_km">TOTAL KM</string>
+    <string name="run_history">Run History</string>
+</resources>

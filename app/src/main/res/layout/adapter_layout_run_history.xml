@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:id="@+id/history_item"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="130dp">
+    <RelativeLayout
+        android:id="@+id/linear_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FFFFFF"
+        android:visibility="visible"
+        android:elevation="1dp">
+        <RelativeLayout
+            android:id="@+id/rlDate"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp"
+            android:paddingStart="16dp"
+            android:weightSum="1"
+            android:background="@color/color_white">
+            <TextView
+                android:id="@+id/date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:fontFamily="@font/avenir_next_regular"
+                android:textColor="#444545"
+                android:text="Running Date" />
+
+            <TextView
+                android:layout_below="@id/date"
+                android:id="@+id/tv_runningDay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/avenir_next_regular"
+                android:text="Running Day"
+                android:textSize="14sp"
+                android:textColor="#030303" />
+            <RelativeLayout
+                android:layout_below="@id/tv_runningDay"
+                android:layout_marginTop="5sp"
+                android:id="@+id/divider"
+                android:layout_width="match_parent"
+                android:layout_height="0.5px"
+                android:alpha="0.5">
+
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_below="@id/divider"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingEnd="16dp">
+                <TextView
+                    android:layout_marginTop="5dp"
+                    android:id="@+id/pace_value"
+                    android:text="--"
+                    android:textSize="14sp"
+                    android:textColor="#444545"
+                    android:fontFamily="@font/avenir_next_bold"
+                    android:layout_marginStart="8dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/tvPace1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Avg. Pace"
+                    android:textSize="10sp"
+                    android:fontFamily="@font/avenir_next_regular"
+                    android:textAllCaps="true"
+                    android:textColor="#444545"
+                    android:layout_below="@id/pace_value"/>
+
+                <TextView
+                    android:layout_marginTop="5dp"
+                    android:id="@+id/distance"
+                    android:text="--"
+                    android:fontFamily="@font/avenir_next_bold"
+                    android:textSize="14sp"
+                    android:textColor="#444545"
+                    android:layout_centerHorizontal="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/tvDistance1"
+                    android:layout_width="wrap_content"
+                    android:fontFamily="@font/avenir_next_regular"
+                    android:layout_height="wrap_content"
+                    android:text="Total run"
+                    android:textSize="10sp"
+                    android:layout_centerHorizontal="true"
+                    android:textAllCaps="true"
+                    android:textColor="#444545"
+                    android:layout_below="@id/distance" />
+
+                <TextView
+                    android:layout_marginTop="5dp"
+                    android:id="@+id/time_value"
+                    android:text="--"
+                    android:fontFamily="@font/avenir_next_bold"
+                    android:textSize="14sp"
+                    android:textColor="#444545"
+                    android:layout_alignParentRight="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/tvTime1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Total Time"
+                    android:fontFamily="@font/avenir_next_regular"
+                    android:textSize="10sp"
+                    android:textColor="#444545"
+                    android:layout_alignParentRight="true"
+                    android:textAllCaps="true"
+                    android:layout_below="@id/time_value" />
+            </RelativeLayout>
+
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="#f6f8f9"
+        android:layout_below="@id/linear_layout">
+
+    </RelativeLayout>
+</RelativeLayout>
