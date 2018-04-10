@@ -61,7 +61,7 @@
             android:fontFamily="@font/din_considred"
             android:gravity="center"
             android:includeFontPadding="false"
-            android:text="00.00"
+            android:text="00'00"
             android:textAllCaps="true"
             android:textColor="@color/brand_color"
             android:textSize="130sp" />

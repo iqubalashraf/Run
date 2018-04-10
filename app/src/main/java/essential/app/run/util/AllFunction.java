@@ -72,87 +72,17 @@ public class AllFunction {
     }
 
     public static String getFormattedTime(int time) {
-        String formattedTime = "00:00";
-        int min = 0, sec = 0, hour = 0;
-        if (time < 3600) {
-            if (time < 60) {
-                if (time < 10) {
-                    formattedTime = "00:0" + time;
-                } else if (time >= 10) {
-                    formattedTime = "00:" + time;
-                }
-            } else if (time >= 60) {
-                min = time / 60;
-                sec = time % 60;
-                if (min < 10) {
-                    if (sec < 10) {
-                        formattedTime = "0" + min + ":0" + sec;
-                    } else if (sec >= 10) {
-                        formattedTime = "0" + min + ":" + sec;
-                    }
-                } else if (min >= 10) {
-                    if (sec < 10) {
-                        formattedTime = min + ":0" + sec;
-                    } else if (sec >= 10) {
-                        formattedTime = min + ":" + sec;
-                    }
-                }
-            }
-        } else if (time >= 3600) {
-            hour = time / 3600;
-            time = time % 3600;
-            if (hour < 10) {
-                if (time < 60) {
-                    if (time < 10) {
-                        formattedTime = "0" + hour + ":00:0" + time;
-                    } else if (time >= 10) {
-                        formattedTime = "0" + hour + ":00:" + time;
-                    }
-                } else if (time >= 60) {
-                    min = time / 60;
-                    sec = time % 60;
-                    if (min < 10) {
-                        if (sec < 10) {
-                            formattedTime = "0" + hour + ":0" + min + ":0" + sec;
-                        } else if (sec >= 10) {
-                            formattedTime = "0" + hour + ":0" + min + ":" + sec;
-                        }
-                    } else if (min >= 10) {
-                        if (sec < 10) {
-                            formattedTime = "0" + hour + ":" + min + ":0" + sec;
-                        } else if (sec >= 10) {
-                            formattedTime = "0" + hour + ":" + min + ":" + sec;
-                        }
-                    }
-                }
-            } else if (hour >= 10) {
-                if (time < 60) {
-                    if (time < 10) {
-                        formattedTime = hour + ":" + "00:0" + time;
-                    } else if (time >= 10) {
-                        formattedTime = hour + ":" + "00:" + time;
-                    }
-                } else if (time >= 60) {
-                    min = time / 60;
-                    sec = time % 60;
-                    if (min < 10) {
-                        if (sec < 10) {
-                            formattedTime = hour + ":" + "0" + min + ":0" + sec;
-                        } else if (sec >= 10) {
-                            formattedTime = hour + ":" + "0" + min + ":" + sec;
-                        }
-                    } else if (min >= 10) {
-                        if (sec < 10) {
-                            formattedTime = hour + ":" + min + ":0" + sec;
-                        } else if (sec >= 10) {
-                            formattedTime = hour + ":" + min + ":" + sec;
-                        }
-                    }
-                }
-            }
 
+        int hour  = time/3600;
+        int min = (time/60)%60;
+        int sec = time%60;
+
+        if(hour == 0){
+            return String.format("%02d:%02d", min, sec);
+        }else {
+            return String.format("%02d:%02d:%02d", hour, min, sec);
         }
-        return formattedTime;
+
     }
 
     public static double calculatePace(int distanceCovered, int time) {
@@ -164,22 +94,22 @@ public class AllFunction {
         return 0;
     }
 
+    public static String getPaceToDisplay(int distanceCovered, int time) {
+        double temp = time * 16.666666667;
+        int t1 = time/distanceCovered;
+        int t2 = time%distanceCovered;
+        return String.format("%02d'%02d", t1, t2);
+    }
+
     public static String getTotalTimeInHours(Context context) {
         int totalDuration = 0;
-        String totalHours = "";
         RunDataList runDataList = SharedPreferences.runData(context);
         ArrayList<RunData> arrayList = runDataList.getArrayList();
         int size = arrayList.size();
         for (int i = 0; i < size; i++) {
             totalDuration = totalDuration + arrayList.get(i).getTime();
         }
-        totalDuration = totalDuration / 3600;
-        if (totalDuration < 10) {
-            totalHours = "0" + String.valueOf(totalDuration);
-        } else {
-            totalHours = String.valueOf(totalDuration);
-        }
-        return totalHours;
+        return formatNumber((double) totalDuration / 3600);
     }
 
     public static String getTotalDistanceCovered(Context context) {
@@ -292,7 +222,7 @@ public class AllFunction {
         return builder.build();
     }
 
-    public static float convertDpToPixel(float dp, Context context) {
+    private static float convertDpToPixel(float dp, Context context) {
         Resources resources = context.getResources();
         DisplayMetrics metrics = resources.getDisplayMetrics();
         return dp * ((float) metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT);

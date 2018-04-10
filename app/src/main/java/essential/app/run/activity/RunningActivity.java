@@ -106,15 +106,15 @@ public class RunningActivity extends AppCompatActivity implements View.OnClickLi
     public void updateUI() {
         updateDistance(totalDistance);
         int time = (int) ((SystemClock.elapsedRealtime() - startTime) / 1000);
-        totalDuration = time;
+        totalDuration = time ;
         String time_to_display = AllFunction.getFormattedTime(time);
         if (time_to_display.length() >= 6) {
-            duration.setTextSize(80);
+            duration.setTextSize(100);
         }
         duration.setText(time_to_display);
         if (totalDistance > 5) {
-            totalPace = (float) AllFunction.calculatePace((int) totalDistance, time);
-            paceAvagrage.setText(String.valueOf(totalPace));
+//            totalPace = (float) AllFunction.calculatePace((int) totalDistance, time);
+            paceAvagrage.setText(AllFunction.getPaceToDisplay((int) totalDistance, time));
         }
     }
 
@@ -183,7 +183,9 @@ public class RunningActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     private void stopRun() {
-        RunData runData = new RunData(unix_time, (int) totalDistance, totalPace, totalDuration, latitude, longitude);
+        RunData runData = new RunData(unix_time, (int) totalDistance,
+                (float) AllFunction.calculatePace((int) totalDistance, totalDuration),
+                totalDuration, latitude, longitude);
         SharedPreferences.runData(activity, runData);
     }
 }
