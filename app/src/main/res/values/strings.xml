@@ -5,4 +5,5 @@
     <string name="total_hours">TOTAL HOURS</string>
     <string name="total_km">TOTAL KM</string>
     <string name="run_history">Run History</string>
+    <string name="back_up">Back Up</string>
 </resources>

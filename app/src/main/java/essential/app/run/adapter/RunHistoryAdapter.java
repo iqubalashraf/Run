@@ -41,14 +41,11 @@ public class RunHistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
         final RunData runData = arrayList.get(position);
         ViewHolderRunHistory holderRunHistory = (ViewHolderRunHistory) holder;
-        holderRunHistory.tvDate.setText(
-                AllFunction.convertUnixTimeToFormattedTime(runData.getUnix_time()));
-        holderRunHistory.tvDistance.setText(AllFunction.getFormatedDistance(
-                runData.getDistance(), true));
-        holderRunHistory.tvPace.setText(AllFunction.formatNumber(runData.getPace()));
-        holderRunHistory.tvTime.setText(AllFunction.getFormattedTime(runData.getTime()));
-        holderRunHistory.tvRunninDay.setText(AllFunction.getDayFromDate(
-                runData.getUnix_time()) + " Running");
+        holderRunHistory.tvDate.setText(runData.getDate_of_running());
+        holderRunHistory.tvDistance.setText(runData.getTotal_run());
+        holderRunHistory.tvPace.setText(runData.getAvg_pace());
+        holderRunHistory.tvTime.setText(runData.getTotal_time());
+        holderRunHistory.tvRunninDay.setText(runData.getDay_of_running());
         holderRunHistory.v.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

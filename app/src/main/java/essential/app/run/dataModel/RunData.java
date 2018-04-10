@@ -14,6 +14,28 @@ public class RunData {
     private float pace = 0;
     private int time = 0;
 
+    private String date_of_running = "";
+    private String day_of_running = "";
+    private String avg_pace = "";
+    private String total_run = "";
+    private String total_time = "";
+
+    public RunData(ArrayList<Double> latitude, ArrayList<Double> longitude, long unix_time, float distance,
+                   float pace, int time, String date_of_running, String day_of_running, String avg_pace,
+                   String total_run, String total_time) {
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.unix_time = unix_time;
+        this.distance = distance;
+        this.pace = pace;
+        this.time = time;
+        this.date_of_running = date_of_running;
+        this.day_of_running = day_of_running;
+        this.avg_pace = avg_pace;
+        this.total_run = total_run;
+        this.total_time = total_time;
+    }
+
     public RunData(long unix_time, float distance, float pace, int time,
                    ArrayList<Double> latitude, ArrayList<Double> longitude) {
 
@@ -30,6 +52,46 @@ public class RunData {
         this.distance = distance;
         this.pace = pace;
         this.time = time;
+    }
+
+    public String getDate_of_running() {
+        return date_of_running;
+    }
+
+    public void setDate_of_running(String date_of_running) {
+        this.date_of_running = date_of_running;
+    }
+
+    public String getDay_of_running() {
+        return day_of_running;
+    }
+
+    public void setDay_of_running(String day_of_running) {
+        this.day_of_running = day_of_running;
+    }
+
+    public String getAvg_pace() {
+        return avg_pace;
+    }
+
+    public void setAvg_pace(String avg_pace) {
+        this.avg_pace = avg_pace;
+    }
+
+    public String getTotal_run() {
+        return total_run;
+    }
+
+    public void setTotal_run(String total_run) {
+        this.total_run = total_run;
+    }
+
+    public String getTotal_time() {
+        return total_time;
+    }
+
+    public void setTotal_time(String total_time) {
+        this.total_time = total_time;
     }
 
     public ArrayList<Double> getLatitude() {

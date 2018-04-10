@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Color;
+import android.os.Environment;
 import android.util.DisplayMetrics;
 
 import com.google.android.gms.maps.CameraUpdate;
@@ -14,12 +15,28 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.InvalidParameterSpecException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
 
 import essential.app.run.R;
 import essential.app.run.dataModel.RunData;
@@ -226,5 +243,72 @@ public class AllFunction {
         Resources resources = context.getResources();
         DisplayMetrics metrics = resources.getDisplayMetrics();
         return dp * ((float) metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT);
+    }
+    private static SecretKey generateKey()
+            throws NoSuchAlgorithmException, InvalidKeySpecException {
+        return new SecretKeySpec(Constant.cipher_password.getBytes(), "AES");
+    }
+
+    private static byte[] encryptMsg(String message, SecretKey secret)
+            throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, InvalidParameterSpecException,
+            IllegalBlockSizeException, BadPaddingException, UnsupportedEncodingException {
+        /* Encrypt the message. */
+        Cipher cipher = null;
+        cipher = Cipher.getInstance(Constant.encryption_algorithm);
+        cipher.init(Cipher.ENCRYPT_MODE, secret);
+        return cipher.doFinal(message.getBytes("UTF-8"));
+    }
+
+    private static String decryptMsg(byte[] cipherText, SecretKey secret)
+            throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidParameterSpecException,
+            InvalidAlgorithmParameterException, InvalidKeyException, BadPaddingException, IllegalBlockSizeException,
+            UnsupportedEncodingException {
+        /* Decrypt the message, given derived encContentValues and initialization vector. */
+        Cipher cipher = null;
+        cipher = Cipher.getInstance(Constant.encryption_algorithm);
+        cipher.init(Cipher.DECRYPT_MODE, secret);
+        return new String(cipher.doFinal(cipherText), "UTF-8");
+    }
+
+    public static boolean writeFile( String msg) {
+        try {
+            SecretKey secret = generateKey();
+            byte[] bytes = encryptMsg(msg, secret);
+            File root = new File(Environment.getExternalStorageDirectory(), Constant.folder_name);
+            if (!root.exists()) {
+                if (root.mkdirs()) {
+                    File gpxfile = new File(root, Constant.back_up_file);
+                    try (FileOutputStream fos = new FileOutputStream(gpxfile.getAbsolutePath())) {
+                        fos.write(bytes);
+                    }
+                }
+            } else {
+                File gpxfile = new File(root, Constant.back_up_file);
+                try (FileOutputStream fos = new FileOutputStream(gpxfile.getAbsolutePath())) {
+                    fos.write(bytes);
+                }
+            }
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public static String readFile() {
+        File sdcard = Environment.getExternalStorageDirectory();
+        File file = new File(sdcard + File.separator + Constant.folder_name, Constant.back_up_file);
+        try {
+            SecretKey secret = generateKey();
+            byte[] bytesArray = new byte[(int) file.length()];
+            FileInputStream fis = new FileInputStream(file);
+            fis.read(bytesArray); //read file into bytes[]
+            fis.close();
+            return decryptMsg(bytesArray, secret);
+
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "";
     }
 }

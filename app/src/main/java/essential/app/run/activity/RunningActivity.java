@@ -183,9 +183,12 @@ public class RunningActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     private void stopRun() {
-        RunData runData = new RunData(unix_time, (int) totalDistance,
+        RunData runData = new RunData(latitude, longitude, unix_time, (int) totalDistance,
                 (float) AllFunction.calculatePace((int) totalDistance, totalDuration),
-                totalDuration, latitude, longitude);
+                totalDuration, AllFunction.convertUnixTimeToFormattedTime(unix_time),
+                AllFunction.getDayFromDate(unix_time) + " Running",
+                paceAvagrage.getText().toString(), distance.getText().toString(),
+                duration.getText().toString());
         SharedPreferences.runData(activity, runData);
     }
 }
