@@ -30,6 +30,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -95,9 +96,9 @@ public class AllFunction {
         int sec = time%60;
 
         if(hour == 0){
-            return String.format("%02d:%02d", min, sec);
+            return String.format(Locale.ENGLISH, "%02d:%02d", min, sec);
         }else {
-            return String.format("%02d:%02d:%02d", hour, min, sec);
+            return String.format(Locale.ENGLISH,"%02d:%02d:%02d", hour, min, sec);
         }
 
     }
@@ -113,9 +114,9 @@ public class AllFunction {
 
     public static String getPaceToDisplay(int distanceCovered, int time) {
         double temp = time * 16.666666667;
-        int t1 = time/distanceCovered;
-        int t2 = time%distanceCovered;
-        return String.format("%02d'%02d", t1, t2);
+        int t1 = (int)temp/distanceCovered;
+        int t2 = (int) temp%distanceCovered;
+        return String.format(Locale.ENGLISH, "%02d'%02d", t1, t2);
     }
 
     public static String getTotalTimeInHours(Context context) {

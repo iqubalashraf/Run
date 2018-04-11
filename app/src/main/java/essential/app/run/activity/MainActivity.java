@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 
@@ -32,7 +33,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         initialize();
         initializeListener();
 
-        /*ArrayList<RunData> arrayList = SharedPreferences.runData(activity).getArrayList();
+       /* ArrayList<RunData> arrayList = SharedPreferences.runData(activity).getArrayList();
         for (int i=0; i <arrayList.size(); i++){
             RunData runData = arrayList.get(i);
             arrayList.get(i).setDate_of_running(AllFunction.convertUnixTimeToFormattedTime(runData.getUnix_time()));
@@ -61,7 +62,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(new Intent(activity, RunHistory.class));
                 break;
             case R.id.back_up_data:
-                AllFunction.writeFile(gson.toJson(SharedPreferences.runData(activity)));
+                if(AllFunction.writeFile(gson.toJson(SharedPreferences.runData(activity)))){
+                    Toast.makeText(activity, "Backup Created", Toast.LENGTH_SHORT).show();
+                }
+
                 break;
         }
     }
