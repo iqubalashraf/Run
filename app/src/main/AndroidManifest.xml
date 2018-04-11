@@ -6,6 +6,8 @@
 
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -22,6 +24,7 @@
         </activity>
         <activity android:name=".activity.RunningActivity" android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity android:name=".activity.RunHistory" />
+        <receiver android:name=".broadcastReceiver.AlarmReceiver"/>
         <service android:name=".service.RunningActvityService"
             android:exported="false"/>
         <meta-data

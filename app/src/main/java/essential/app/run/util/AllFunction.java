@@ -1,7 +1,10 @@
 package essential.app.run.util;
 
 import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Environment;
@@ -29,6 +32,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -40,6 +44,7 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
 import essential.app.run.R;
+import essential.app.run.broadcastReceiver.AlarmReceiver;
 import essential.app.run.dataModel.RunData;
 import essential.app.run.dataModel.RunDataList;
 
@@ -91,14 +96,14 @@ public class AllFunction {
 
     public static String getFormattedTime(int time) {
 
-        int hour  = time/3600;
-        int min = (time/60)%60;
-        int sec = time%60;
+        int hour = time / 3600;
+        int min = (time / 60) % 60;
+        int sec = time % 60;
 
-        if(hour == 0){
+        if (hour == 0) {
             return String.format(Locale.ENGLISH, "%02d:%02d", min, sec);
-        }else {
-            return String.format(Locale.ENGLISH,"%02d:%02d:%02d", hour, min, sec);
+        } else {
+            return String.format(Locale.ENGLISH, "%02d:%02d:%02d", hour, min, sec);
         }
 
     }
@@ -114,8 +119,8 @@ public class AllFunction {
 
     public static String getPaceToDisplay(int distanceCovered, int time) {
         double temp = time * 16.666666667;
-        int t1 = (int)temp/distanceCovered;
-        int t2 = (int) temp%distanceCovered;
+        int t1 = (int) temp / distanceCovered;
+        int t2 = (int) temp % distanceCovered;
         return String.format(Locale.ENGLISH, "%02d'%02d", t1, t2);
     }
 
@@ -245,6 +250,7 @@ public class AllFunction {
         DisplayMetrics metrics = resources.getDisplayMetrics();
         return dp * ((float) metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT);
     }
+
     private static SecretKey generateKey()
             throws NoSuchAlgorithmException, InvalidKeySpecException {
         return new SecretKeySpec(Constant.cipher_password.getBytes(), "AES");
@@ -271,7 +277,7 @@ public class AllFunction {
         return new String(cipher.doFinal(cipherText), "UTF-8");
     }
 
-    public static boolean writeFile( String msg) {
+    public static boolean writeFile(String msg) {
         try {
             SecretKey secret = generateKey();
             byte[] bytes = encryptMsg(msg, secret);
@@ -307,9 +313,30 @@ public class AllFunction {
             fis.close();
             return decryptMsg(bytesArray, secret);
 
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return "";
+    }
+
+    public static void setAutomaticBackup(Context context) {
+        AlarmManager alarmMgr;
+        PendingIntent alarmIntent;
+        alarmMgr = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(context, AlarmReceiver.class);
+        alarmIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
+
+// Set the alarm to start at 03:00 AM
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(new Date().getTime());
+        calendar.set(Calendar.HOUR_OF_DAY, 3);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+
+// setRepeating() lets you specify a precise custom interval--in this case,
+// 1 day
+        assert alarmMgr != null;
+        alarmMgr.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
+                AlarmManager.INTERVAL_DAY, alarmIntent);
     }
 }

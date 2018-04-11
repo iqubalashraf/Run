@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         initialize();
         initializeListener();
+        AllFunction.setAutomaticBackup(this);
 
        /* ArrayList<RunData> arrayList = SharedPreferences.runData(activity).getArrayList();
         for (int i=0; i <arrayList.size(); i++){
